@@ -1,2 +1,2 @@
-jackshax.github.io
+johnlarkin.github.io
 Personal website
