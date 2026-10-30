@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>John Larkin – Video Editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#ECEEF1; --surface:#FFFFFF; --ink:#161A22; --muted:#5A6272; --line:#C9CED8; --accent:#2B45F0; --on-accent:#FFFFFF; --clip:#DDE2EE;
+  --head:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --body:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1B1E26;--surface:#252A35;--ink:#ECEEF3;--muted:#A0A8B8;--line:#3A4050;--accent:#8EA0FF;--on-accent:#12152A;--clip:#2E3444}}
+:root[data-theme="dark"]{--bg:#1B1E26;--surface:#252A35;--ink:#ECEEF3;--muted:#A0A8B8;--line:#3A4050;--accent:#8EA0FF;--on-accent:#12152A;--clip:#2E3444}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 var(--body)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem)}
+header.top{padding:clamp(2rem,6vw,4.5rem) 0 2rem}
+.top nav{display:flex;gap:1.5rem;font-weight:500;margin-bottom:clamp(2rem,6vw,4rem)}
+.top nav a{text-decoration:none;color:var(--muted)}
+.top nav a:hover{color:var(--ink)}
+.top nav .name{color:var(--ink);margin-right:auto;font-family:var(--head);font-weight:700}
+h1{font:700 clamp(2.6rem,8vw,5.8rem)/0.98 var(--head);letter-spacing:-0.03em;margin:0 0 1.25rem;max-width:14ch}
+.lede{font-size:1.2rem;color:var(--muted);max-width:44ch;margin:0}
+/* timeline ruler: the one signature element */
+.ruler{height:34px;margin:2.5rem 0 0;border-bottom:2px solid var(--ink);position:relative;
+  background:repeating-linear-gradient(to right,var(--ink) 0 1px,transparent 1px 12px) bottom/100% 8px no-repeat,
+             repeating-linear-gradient(to right,var(--ink) 0 2px,transparent 2px 60px) bottom/100% 18px no-repeat}
+.playhead{position:absolute;top:0;bottom:-2px;width:2px;background:var(--accent);left:0;transition:left .15s}
+.playhead::before{content:"";position:absolute;top:0;left:-6px;border:7px solid transparent;border-top-color:var(--accent);border-bottom:0}
+section{padding:clamp(2.5rem,6vw,4.5rem) 0}
+h2{font:700 clamp(1.6rem,3.5vw,2.2rem)/1.1 var(--head);letter-spacing:-0.02em;margin:0 0 1.75rem}
+.grid{display:grid;gap:1.75rem 1.5rem;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr))}
+.item{margin:0}
+.player{position:relative;aspect-ratio:16/9;width:100%;border:0;padding:0;border-radius:4px;overflow:hidden;background:var(--clip);cursor:pointer;display:block;color:var(--ink);font:inherit}
+.player::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to right,transparent 0 calc(25% - 1px),var(--line) calc(25% - 1px) 25%);opacity:.6}
+.player .tc{position:absolute;left:.9rem;bottom:.8rem;font:500 .85rem var(--body);font-variant-numeric:tabular-nums;z-index:1;color:var(--muted)}
+.player .play{position:absolute;inset:0;margin:auto;width:64px;height:64px;border-radius:50%;background:var(--accent);z-index:1;transition:transform .15s}
+.player .play::before{content:"";position:absolute;left:25px;top:19px;border:13px solid transparent;border-left:20px solid var(--on-accent);border-right:0}
+.player:hover .play{transform:scale(1.08)}
+.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.item h3{font:700 1.15rem/1.25 var(--head);margin:.8rem 0 .15rem}
+.item p{margin:0;color:var(--muted);font-size:.98rem}
+.about{display:grid;gap:2rem;grid-template-columns:1fr;max-width:62ch}
+.about p{margin:0 0 1rem}
+ul.tools{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:.5rem}
+ul.tools li{border:1px solid var(--line);border-radius:3px;padding:.2rem .7rem;font-size:.95rem;background:var(--surface)}
+.contact a.mail{display:inline-block;font:700 clamp(1.4rem,4vw,2.4rem)/1.2 var(--head);letter-spacing:-0.02em;text-decoration-thickness:3px;text-underline-offset:6px;text-decoration-color:var(--accent)}
+.contact ul{list-style:none;padding:0;margin:1.5rem 0 0;display:flex;gap:1.5rem;flex-wrap:wrap}
+.credits{list-style:none;padding:0;margin:0;display:grid;gap:.75rem;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))}
+.credits a{display:block;padding:.9rem 1rem;border:1px solid var(--line);border-radius:4px;background:var(--surface);text-decoration:none;font-weight:500}
+.credits a:hover{border-color:var(--accent)}
+.credits small{display:block;color:var(--muted);font-weight:400}
+footer{padding:2rem 0 3rem;color:var(--muted);font-size:.95rem;border-top:1px solid var(--line)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <nav aria-label="Main">
+      <span class="name" id="navName">John Larkin</span>
+      <a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a>
+    </nav>
+    <h1 id="heroTitle">2x Emmy Award-winning producer, editor and writer.</h1>
+    <p class="lede" id="heroLede">Sports storytelling and documentary work for NFL Films, HBO, Netflix and more.</p>
+    <div class="ruler" aria-hidden="true"><div class="playhead" id="playhead"></div></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="work" aria-labelledby="workH">
+    <h2 id="workH">Selected work</h2>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="streaming" aria-labelledby="streamH">
+    <h2 id="streamH">Watch on streaming</h2>
+    <ul class="credits" id="credits"></ul>
+  </section>
+
+  <section id="about" aria-labelledby="aboutH">
+    <h2 id="aboutH">About</h2>
+    <div class="about">
+      <div id="aboutText"></div>
+      <ul class="tools" id="tools"></ul>
+    </div>
+  </section>
+
+  <section id="contact" class="contact" aria-labelledby="contactH">
+    <h2 id="contactH">Let’s work together</h2>
+    <a class="mail" id="mail" href="mailto:larkin.john.h@gmail.com">larkin.john.h@gmail.com</a>
+    <ul id="links"></ul>
+  </section>
+</main>
+
+<footer><div class="wrap"><span id="foot"></span></div></footer>
+
+<script>
+/* ============ EDIT THIS SECTION ============ */
+const SITE = {
+  name: "John Larkin",
+  headline: "2x Emmy Award-winning producer, editor and writer.",
+  intro: "Sports storytelling and documentary work for NFL Films, HBO, Netflix and more.",
+  about: [
+    "I’m a Seasonal Producer at NFL Films, where I’ve worked since 2021. I research storylines, log and organize footage in Avid Media Composer, write narration, and edit teases, segments and full programming blocks.",
+    "My credits include Roku’s NFL Draft: The Pick Is In and Netflix’s Quarterback Season 2, both Emmy winners, plus Netflix’s WWE: Unreal and HBO’s Hard Knocks. I also write and produce season highlight films for NFL Network."
+  ],
+  tools: ["Avid Media Composer", "Adobe Premiere", "DaVinci Resolve", "Pro Tools", "Photoshop"],
+  email: "larkin.john.h@gmail.com",
+  links: [
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/john-larkin-8b5232aa/" }
+  ]
+};
+/* Paste any YouTube or Vimeo link as url. For other hosts, paste the
+   embed URL (the src from the host’s embed code) and set type: "embed". */
+const PROJECTS = [
+  { title: "Cleveland Browns 2022 Highlight", note: "Highlight film", url: "https://youtu.be/4-e0j52sXEc" },
+  { title: "Cleveland Browns 2021 Highlight", note: "Highlight film", url: "https://youtu.be/5uW4hgOBZIE" },
+  { title: "Weather", note: "", url: "https://youtu.be/-tNqJg0L1sg" },
+  { title: "SB Music Fest", note: "Festival film", url: "https://youtu.be/Uu_K9ya8ofE" },
+  { title: "No Filter, Mic’d Up at The Players | Chasing Sunday", note: "PGA TOUR Chasing Sunday · Associate Producer and Editor", url: "https://www.youtube.com/watch?v=unKuAj1BQic" }
+];
+/* Titles on streaming services can’t be embedded, so they appear as links. */
+const STREAMING = [
+  { title: "The Pick Is In", role: "Associate Producer · Emmy winner", service: "Disney+", url: "https://www.disneyplus.com/browse/entity-4998481b-6146-4349-93a9-90c604316a2d" },
+  { title: "Quarterback", role: "Season 2 · Associate Producer · Emmy winner", service: "Netflix", url: "https://www.netflix.com/title/81482895" },
+  { title: "Hard Knocks: In Season with the NFC East", role: "Associate Producer", service: "HBO Max", url: "https://www.hbomax.com/show/0052fa5c-85b6-42dc-88bb-2c6f812d7216" },
+  { title: "Hard Knocks: In Season with the AFC North", role: "Associate Producer", service: "HBO Max", url: "https://www.hbomax.com/show/2235e0d2-1e0c-4031-8b51-b74f1707a60a" },
+  { title: "Hard Knocks: In Season with the Miami Dolphins", role: "Associate Producer and Editor", service: "HBO Max", url: "https://www.hbomax.com/show/dd81fcb3-4d2c-4abb-9c97-88355f4978e1" },
+  { title: "Hard Knocks: Offseason with the New York Giants", role: "Associate Producer · Emmy nominated", service: "HBO Max", url: "https://www.hbomax.com/show/f53eed07-55f6-4f54-8506-7a7cf71f1779" },
+  { title: "WWE Unreal", role: "Associate Producer · Emmy nominated", service: "Netflix", url: "https://www.netflix.com/title/81928921" },
+  { title: "Rise of the 49ers", role: "Associate Producer", service: "AMC+", url: "https://www.amcplus.com/shows/rise-of-the-49ers--1073909" },
+  { title: "30 for 30: Bullies of Baltimore", role: "Production Assistant", service: "Disney+", url: "https://www.disneyplus.com/browse/entity-6920db05-41ef-450f-97ce-70ec86dbff9f" }
+];
+/* ============================================ */
+
+function embedUrl(p){
+  const u = p.url.trim();
+  if (p.type === "embed") return u + (u.includes("?") ? "&" : "?") + "autoplay=1";
+  let m;
+  if ((m = u.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/)))
+    return "https://www.youtube-nocookie.com/embed/" + m[1] + "?autoplay=1&rel=0";
+  if ((m = u.match(/vimeo\.com\/(?:video\/)?(\d+)(?:\/(\w+))?/)))
+    return "https://player.vimeo.com/video/" + m[1] + "?autoplay=1" + (m[2] ? "&h=" + m[2] : "");
+  return u;
+}
+
+const $ = id => document.getElementById(id);
+document.title = SITE.name + " – Video Editor";
+$("navName").textContent = SITE.name;
+$("heroTitle").textContent = SITE.headline;
+$("heroLede").textContent = SITE.intro;
+$("foot").textContent = "© " + new Date().getFullYear() + " " + SITE.name;
+$("mail").href = "mailto:" + SITE.email; $("mail").textContent = SITE.email;
+$("aboutText").innerHTML = SITE.about.map(t => "<p></p>").join("");
+$("aboutText").querySelectorAll("p").forEach((el, i) => el.textContent = SITE.about[i]);
+SITE.tools.forEach(t => { const li = document.createElement("li"); li.textContent = t; $("tools").appendChild(li); });
+SITE.links.forEach(l => {
+  const li = document.createElement("li"), a = document.createElement("a");
+  a.href = l.url; a.textContent = l.label; a.target = "_blank"; a.rel = "noopener";
+  li.appendChild(a); $("links").appendChild(li);
+});
+
+PROJECTS.forEach((p, i) => {
+  const fig = document.createElement("figure"); fig.className = "item";
+  const btn = document.createElement("button");
+  btn.className = "player"; btn.type = "button"; btn.setAttribute("aria-label", "Play " + p.title);
+  const secs = 40 + i * 37, tc = "00:" + String(Math.floor(secs/60)).padStart(2,"0") + ":" + String(secs%60).padStart(2,"0");
+  btn.innerHTML = '<span class="play"></span><span class="tc">' + tc + '</span>';
+  btn.addEventListener("click", () => {
+    const f = document.createElement("iframe");
+    f.src = embedUrl(p); f.title = p.title; f.loading = "lazy";
+    f.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media"; f.allowFullscreen = true;
+    btn.replaceWith(f);
+  });
+  const h = document.createElement("h3"); h.textContent = p.title;
+  const n = document.createElement("p"); n.textContent = p.note || "";
+  fig.append(btn, h, n); $("grid").appendChild(fig);
+});
+
+STREAMING.forEach(s => {
+  const li = document.createElement("li"), a = document.createElement("a"), sm = document.createElement("small");
+  a.href = s.url; a.target = "_blank"; a.rel = "noopener";
+  a.append(document.createTextNode(s.title)); sm.textContent = (s.role ? s.role + " · " : "") + "Watch on " + s.service; a.appendChild(sm);
+  li.appendChild(a); $("credits").appendChild(li);
+});
+
+/* playhead follows scroll along the ruler */
+const ph = $("playhead");
+function movePlayhead(){
+  const max = document.documentElement.scrollHeight - innerHeight;
+  const pct = max > 0 ? Math.min(1, scrollY / max) : 0;
+  ph.style.left = (pct * 100) + "%";
+}
+addEventListener("scroll", movePlayhead, { passive: true }); movePlayhead();
+</script>
+</body>
+</html>
