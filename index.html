@@ -68,7 +68,9 @@ ul.tools li{border:1px solid var(--line);border-radius:3px;padding:.2rem .7rem;f
 .contact a.mail{display:inline-block;font:700 clamp(1.4rem,4vw,2.4rem)/1.2 var(--head);letter-spacing:-0.02em;text-decoration-thickness:3px;text-underline-offset:6px;text-decoration-color:var(--accent)}
 .contact ul{list-style:none;padding:0;margin:1.5rem 0 0;display:flex;gap:1.5rem;flex-wrap:wrap}
 .credits{list-style:none;padding:0;margin:0;display:grid;gap:.75rem;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))}
-.credits a{display:block;padding:.9rem 1rem;border:1px solid var(--line);border-radius:4px;background:var(--surface);text-decoration:none;font-weight:500}
+.credits a{display:flex;align-items:center;gap:.9rem;padding:.6rem .9rem;border:1px solid var(--line);border-radius:4px;background:var(--surface);text-decoration:none;font-weight:500}
+.credits img{width:48px;aspect-ratio:2/3;object-fit:cover;border-radius:2px;flex:none;background:var(--clip)}
+.credits a span{min-width:0}
 .credits a:hover{border-color:var(--accent)}
 .credits small{display:block;color:var(--muted);font-weight:400}
 footer{padding:2rem 0 3rem;color:var(--muted);font-size:.95rem;border-top:1px solid var(--line)}
@@ -151,15 +153,15 @@ const PROJECTS = [
 ];
 /* Titles on streaming services can’t be embedded, so they appear as links. */
 const STREAMING = [
-  { title: "The Pick Is In", role: "Associate Producer · Emmy winner", service: "Disney+", url: "https://www.disneyplus.com/browse/entity-4998481b-6146-4349-93a9-90c604316a2d" },
-  { title: "Quarterback", role: "Season 2 · Associate Producer · Emmy winner", service: "Netflix", url: "https://www.netflix.com/title/81482895" },
-  { title: "Hard Knocks: In Season with the NFC East", role: "Associate Producer", service: "HBO Max", url: "https://www.hbomax.com/show/0052fa5c-85b6-42dc-88bb-2c6f812d7216" },
-  { title: "Hard Knocks: In Season with the AFC North", role: "Associate Producer", service: "HBO Max", url: "https://www.hbomax.com/show/2235e0d2-1e0c-4031-8b51-b74f1707a60a" },
-  { title: "Hard Knocks: In Season with the Miami Dolphins", role: "Associate Producer and Editor", service: "HBO Max", url: "https://www.hbomax.com/show/dd81fcb3-4d2c-4abb-9c97-88355f4978e1" },
-  { title: "Hard Knocks: Offseason with the New York Giants", role: "Associate Producer · Emmy nominated", service: "HBO Max", url: "https://www.hbomax.com/show/f53eed07-55f6-4f54-8506-7a7cf71f1779" },
-  { title: "WWE Unreal", role: "Associate Producer · Emmy nominated", service: "Netflix", url: "https://www.netflix.com/title/81928921" },
-  { title: "Rise of the 49ers", role: "Associate Producer", service: "AMC+", url: "https://www.amcplus.com/shows/rise-of-the-49ers--1073909" },
-  { title: "30 for 30: Bullies of Baltimore", role: "Production Assistant", service: "Disney+", url: "https://www.disneyplus.com/browse/entity-6920db05-41ef-450f-97ce-70ec86dbff9f" }
+  { title: "The Pick Is In", poster: "images/the-pick-is-in.jpg", role: "Associate Producer · Emmy winner", service: "Disney+", url: "https://www.disneyplus.com/browse/entity-4998481b-6146-4349-93a9-90c604316a2d" },
+  { title: "Quarterback", poster: "images/quarterback.jpg", role: "Season 2 · Associate Producer · Emmy winner", service: "Netflix", url: "https://www.netflix.com/title/81482895" },
+  { title: "Hard Knocks: In Season with the NFC East", poster: "images/hard-knocks-nfc-east.jpg", role: "Associate Producer", service: "HBO Max", url: "https://www.hbomax.com/show/0052fa5c-85b6-42dc-88bb-2c6f812d7216" },
+  { title: "Hard Knocks: In Season with the AFC North", poster: "images/hard-knocks-afc-north.jpg", role: "Associate Producer", service: "HBO Max", url: "https://www.hbomax.com/show/2235e0d2-1e0c-4031-8b51-b74f1707a60a" },
+  { title: "Hard Knocks: In Season with the Miami Dolphins", poster: "images/hard-knocks-dolphins.jpg", role: "Associate Producer and Editor", service: "HBO Max", url: "https://www.hbomax.com/show/dd81fcb3-4d2c-4abb-9c97-88355f4978e1" },
+  { title: "Hard Knocks: Offseason with the New York Giants", poster: "images/hard-knocks-giants-offseason.jpg", role: "Associate Producer · Emmy nominated", service: "HBO Max", url: "https://www.hbomax.com/show/f53eed07-55f6-4f54-8506-7a7cf71f1779" },
+  { title: "WWE Unreal", poster: "images/wwe-unreal.jpg", role: "Associate Producer · Emmy nominated", service: "Netflix", url: "https://www.netflix.com/title/81928921" },
+  { title: "Rise of the 49ers", poster: "images/rise-of-the-49ers.jpg", role: "Associate Producer", service: "AMC+", url: "https://www.amcplus.com/shows/rise-of-the-49ers--1073909" },
+  { title: "30 for 30: Bullies of Baltimore", poster: "images/bullies-of-baltimore.jpg", role: "Production Assistant", service: "Disney+", url: "https://www.disneyplus.com/browse/entity-6920db05-41ef-450f-97ce-70ec86dbff9f" }
 ];
 /* ============================================ */
 
@@ -212,7 +214,10 @@ PROJECTS.forEach((p, i) => {
 STREAMING.forEach(s => {
   const li = document.createElement("li"), a = document.createElement("a"), sm = document.createElement("small");
   a.href = s.url; a.target = "_blank"; a.rel = "noopener";
-  a.append(document.createTextNode(s.title)); sm.textContent = (s.role ? s.role + " · " : "") + "Watch on " + s.service; a.appendChild(sm);
+  const txt = document.createElement("span"); txt.append(document.createTextNode(s.title));
+  sm.textContent = (s.role ? s.role + " · " : "") + "Watch on " + s.service; txt.appendChild(sm);
+  if (s.poster) { const im = document.createElement("img"); im.src = s.poster; im.alt = ""; im.addEventListener("error", () => im.remove()); a.appendChild(im); }
+  a.appendChild(txt);
   li.appendChild(a); $("credits").appendChild(li);
 });
 
