@@ -56,8 +56,11 @@ h2{font:700 clamp(1.6rem,3.5vw,2.2rem)/1.1 var(--head);letter-spacing:-0.02em;ma
 .player .play::before{content:"";position:absolute;left:25px;top:19px;border:13px solid transparent;border-left:20px solid var(--on-accent);border-right:0}
 .player:hover .play{transform:scale(1.08)}
 .player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.item > iframe{display:block;width:100%;height:auto;aspect-ratio:16/9;border:0;border-radius:4px;background:#000}
 .item h3{font:700 1.15rem/1.25 var(--head);margin:.8rem 0 .15rem}
 .item p{margin:0;color:var(--muted);font-size:.98rem}
+.ext{display:inline-block;margin-top:.35rem;font-size:.9rem;color:var(--muted)}
+.ext:hover{color:var(--ink)}
 .about{display:grid;gap:2rem;grid-template-columns:1fr;max-width:62ch}
 .about p{margin:0 0 1rem}
 ul.tools{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:.5rem}
@@ -195,13 +198,15 @@ PROJECTS.forEach((p, i) => {
   btn.innerHTML = '<span class="play"></span><span class="tc">' + tc + '</span>';
   btn.addEventListener("click", () => {
     const f = document.createElement("iframe");
-    f.src = embedUrl(p); f.title = p.title; f.loading = "lazy";
+    f.referrerPolicy = "strict-origin-when-cross-origin"; f.src = embedUrl(p); f.title = p.title;
     f.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media"; f.allowFullscreen = true;
     btn.replaceWith(f);
   });
   const h = document.createElement("h3"); h.textContent = p.title;
   const n = document.createElement("p"); n.textContent = p.note || "";
-  fig.append(btn, h, n); $("grid").appendChild(fig);
+  const x = document.createElement("a");
+  x.className = "ext"; x.href = p.url; x.target = "_blank"; x.rel = "noopener"; x.textContent = "Open in a new tab ↗";
+  fig.append(btn, h, n, x); $("grid").appendChild(fig);
 });
 
 STREAMING.forEach(s => {
