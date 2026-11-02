@@ -11,12 +11,12 @@
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
-  --bg:#ECEEF1; --surface:#FFFFFF; --ink:#161A22; --muted:#5A6272; --line:#C9CED8; --accent:#2B45F0; --on-accent:#FFFFFF; --clip:#DDE2EE;
+  --bg:#ECEEF1; --surface:#FFFFFF; --ink:#161A22; --muted:#5A6272; --line:#C9CED8; --accent:#2B45F0; --on-accent:#FFFFFF; --clip:#DDE2EE; --gold-bg:#F7E8AE; --gold-line:#D9B84A; --silver-bg:#DDE1E8; --silver-line:#B4BBC8;
   --head:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
   --body:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1B1E26;--surface:#252A35;--ink:#ECEEF3;--muted:#A0A8B8;--line:#3A4050;--accent:#8EA0FF;--on-accent:#12152A;--clip:#2E3444}}
-:root[data-theme="dark"]{--bg:#1B1E26;--surface:#252A35;--ink:#ECEEF3;--muted:#A0A8B8;--line:#3A4050;--accent:#8EA0FF;--on-accent:#12152A;--clip:#2E3444}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1B1E26;--surface:#252A35;--ink:#ECEEF3;--muted:#A0A8B8;--line:#3A4050;--accent:#8EA0FF;--on-accent:#12152A;--clip:#2E3444;--gold-bg:#4A3F17;--gold-line:#A8892B;--silver-bg:#3C424F;--silver-line:#8A93A5}}
+:root[data-theme="dark"]{--bg:#1B1E26;--surface:#252A35;--ink:#ECEEF3;--muted:#A0A8B8;--line:#3A4050;--accent:#8EA0FF;--on-accent:#12152A;--clip:#2E3444;--gold-bg:#4A3F17;--gold-line:#A8892B;--silver-bg:#3C424F;--silver-line:#8A93A5}
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 var(--body)}
@@ -70,6 +70,10 @@ ul.tools li{border:1px solid var(--line);border-radius:3px;padding:.2rem .7rem;f
 .credits img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--clip)}
 .credits a span{display:block;padding:.8rem 1rem .9rem}
 .credits a:hover{border-color:var(--accent)}
+.credits small b{font-weight:700;color:var(--ink)}
+.credits a.gold{background:var(--gold-bg);border-color:var(--gold-line)}
+.credits a.silver{background:var(--silver-bg);border-color:var(--silver-line)}
+.credits a.gold:hover,.credits a.silver:hover{border-color:var(--accent)}
 .credits small{display:block;color:var(--muted);font-weight:400}
 footer{padding:2rem 0 3rem;color:var(--muted);font-size:.95rem;border-top:1px solid var(--line)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
@@ -151,13 +155,13 @@ const PROJECTS = [
 ];
 /* Titles on streaming services can’t be embedded, so they appear as links. */
 const STREAMING = [
-  { title: "The Pick Is In", poster: "images/the-pick-is-in.jpg", role: "Associate Producer · Emmy winner", service: "Disney+", url: "https://www.disneyplus.com/browse/entity-4998481b-6146-4349-93a9-90c604316a2d" },
-  { title: "Quarterback", poster: "images/quarterback.jpg", role: "Season 2 · Associate Producer · Emmy winner", service: "Netflix", url: "https://www.netflix.com/title/81482895" },
+  { title: "The Pick Is In", tone: "gold", poster: "images/the-pick-is-in.jpg", role: "Associate Producer · Emmy winner", service: "Disney+", url: "https://www.disneyplus.com/browse/entity-4998481b-6146-4349-93a9-90c604316a2d" },
+  { title: "Quarterback", tone: "gold", poster: "images/quarterback.jpg", role: "Season 2 · Associate Producer · Emmy winner", service: "Netflix", url: "https://www.netflix.com/title/81482895" },
   { title: "Hard Knocks: In Season with the NFC East", poster: "images/hard-knocks-nfc-east.jpg", role: "Associate Producer", service: "HBO Max", url: "https://www.hbomax.com/show/0052fa5c-85b6-42dc-88bb-2c6f812d7216" },
   { title: "Hard Knocks: In Season with the AFC North", poster: "images/hard-knocks-afc-north.jpg", role: "Associate Producer", service: "HBO Max", url: "https://www.hbomax.com/show/2235e0d2-1e0c-4031-8b51-b74f1707a60a" },
   { title: "Hard Knocks: In Season with the Miami Dolphins", poster: "images/hard-knocks-dolphins.jpg", role: "Associate Producer and Editor", service: "HBO Max", url: "https://www.hbomax.com/show/dd81fcb3-4d2c-4abb-9c97-88355f4978e1" },
-  { title: "Hard Knocks: Offseason with the New York Giants", poster: "images/hard-knocks-giants-offseason.jpg", role: "Associate Producer · Emmy nominated", service: "HBO Max", url: "https://www.hbomax.com/show/f53eed07-55f6-4f54-8506-7a7cf71f1779" },
-  { title: "WWE Unreal", poster: "images/wwe-unreal.jpg", role: "Associate Producer · Emmy nominated", service: "Netflix", url: "https://www.netflix.com/title/81928921" },
+  { title: "Hard Knocks: Offseason with the New York Giants", tone: "silver", poster: "images/hard-knocks-giants-offseason.jpg", role: "Associate Producer · Emmy nominated", service: "HBO Max", url: "https://www.hbomax.com/show/f53eed07-55f6-4f54-8506-7a7cf71f1779" },
+  { title: "WWE Unreal", tone: "silver", poster: "images/wwe-unreal.jpg", role: "Associate Producer · Emmy nominated", service: "Netflix", url: "https://www.netflix.com/title/81928921" },
   { title: "Rise of the 49ers", poster: "images/rise-of-the-49ers.jpg", role: "Associate Producer", service: "AMC+", url: "https://www.amcplus.com/shows/rise-of-the-49ers--1073909" },
   { title: "30 for 30: Bullies of Baltimore", poster: "images/bullies-of-baltimore.jpg", role: "Production Assistant", service: "Disney+", url: "https://www.disneyplus.com/browse/entity-6920db05-41ef-450f-97ce-70ec86dbff9f" }
 ];
@@ -209,9 +213,15 @@ PROJECTS.forEach((p, i) => {
 
 STREAMING.forEach(s => {
   const li = document.createElement("li"), a = document.createElement("a"), sm = document.createElement("small");
-  a.href = s.url; a.target = "_blank"; a.rel = "noopener";
+  a.href = s.url; a.target = "_blank"; a.rel = "noopener"; if (s.tone) a.className = s.tone;
   const txt = document.createElement("span"); txt.append(document.createTextNode(s.title));
-  sm.textContent = (s.role ? s.role + " · " : "") + "Watch on " + s.service; txt.appendChild(sm);
+  (s.role ? s.role.split(" · ") : []).concat("Watch on " + s.service).forEach((part, i) => {
+    if (i) sm.append(" · ");
+    if (part === "Emmy winner" || part === "Emmy nominated") {
+      const e = document.createElement("b"); e.className = part === "Emmy winner" ? "emmy-w" : "emmy-n"; e.textContent = part; sm.appendChild(e);
+    } else sm.append(part);
+  });
+  txt.appendChild(sm);
   if (s.poster) { const im = document.createElement("img"); im.src = s.poster; im.alt = ""; im.addEventListener("error", () => im.remove()); a.appendChild(im); }
   a.appendChild(txt);
   li.appendChild(a); $("credits").appendChild(li);
