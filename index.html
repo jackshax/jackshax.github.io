@@ -65,10 +65,10 @@ ul.tools{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:.5re
 ul.tools li{border:1px solid var(--line);border-radius:3px;padding:.2rem .7rem;font-size:.95rem;background:var(--surface)}
 .contact a.mail{display:inline-block;font:700 clamp(1.4rem,4vw,2.4rem)/1.2 var(--head);letter-spacing:-0.02em;text-decoration-thickness:3px;text-underline-offset:6px;text-decoration-color:var(--accent)}
 .contact ul{list-style:none;padding:0;margin:1.5rem 0 0;display:flex;gap:1.5rem;flex-wrap:wrap}
-.credits{list-style:none;padding:0;margin:0;display:grid;gap:.75rem;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))}
-.credits a{display:flex;align-items:center;gap:.9rem;padding:.6rem .9rem;border:1px solid var(--line);border-radius:4px;background:var(--surface);text-decoration:none;font-weight:500}
-.credits img{width:104px;aspect-ratio:16/9;object-fit:cover;border-radius:2px;flex:none;background:var(--clip)}
-.credits a span{min-width:0}
+.credits{list-style:none;padding:0;margin:0;display:grid;gap:.75rem;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.credits a{display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);border-radius:4px;background:var(--surface);text-decoration:none;font-weight:500}
+.credits img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--clip)}
+.credits a span{display:block;padding:.8rem 1rem .9rem}
 .credits a:hover{border-color:var(--accent)}
 .credits small{display:block;color:var(--muted);font-weight:400}
 footer{padding:2rem 0 3rem;color:var(--muted);font-size:.95rem;border-top:1px solid var(--line)}
