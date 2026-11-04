@@ -70,11 +70,18 @@ ul.tools li{border:1px solid var(--line);border-radius:3px;padding:.2rem .7rem;f
 .credits img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--clip)}
 .credits a span{display:block;padding:.8rem 1rem .9rem}
 .credits a:hover{border-color:var(--accent)}
+.credits a:not([href]){cursor:default}
+.credits a:not([href]):hover{border-color:var(--line)}
 .credits small b{font-weight:700;color:var(--ink)}
 .credits a.gold{background:var(--gold-bg);border-color:var(--gold-line)}
 .credits a.silver{background:var(--silver-bg);border-color:var(--silver-line)}
 .credits a.gold:hover,.credits a.silver:hover{border-color:var(--accent)}
 .credits small{display:block;color:var(--muted);font-weight:400}
+.credit-groups{display:grid;gap:2.25rem 2rem;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.credit-groups h3{font:700 1.05rem/1.2 var(--head);margin:0 0 .6rem;padding-bottom:.4rem;border-bottom:2px solid var(--ink)}
+.credit-groups ul{list-style:none;margin:0;padding:0}
+.credit-groups li{padding:.4rem 0;border-bottom:1px solid var(--line);font-size:.98rem}
+.credit-groups b{font-weight:700}
 footer{padding:2rem 0 3rem;color:var(--muted);font-size:.95rem;border-top:1px solid var(--line)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -109,6 +116,11 @@ footer{padding:2rem 0 3rem;color:var(--muted);font-size:.95rem;border-top:1px so
   <section id="streaming" aria-labelledby="streamH">
     <h2 id="streamH">Watch on streaming</h2>
     <ul class="credits" id="credits"></ul>
+  </section>
+
+  <section id="credits" aria-labelledby="creditsH">
+    <h2 id="creditsH">Full credits</h2>
+    <div class="credit-groups" id="creditGroups"></div>
   </section>
 
   <section id="about" aria-labelledby="aboutH">
@@ -147,23 +159,61 @@ const SITE = {
 /* Paste any YouTube or Vimeo link as url. For other hosts, paste the
    embed URL (the src from the host’s embed code) and set type: "embed". */
 const PROJECTS = [
-  { title: "Cleveland Browns 2022 Highlight", note: "Highlight film", url: "https://youtu.be/4-e0j52sXEc" },
-  { title: "Cleveland Browns 2021 Highlight", note: "Highlight film", url: "https://youtu.be/5uW4hgOBZIE" },
+  { title: "Cleveland Browns 2022 Highlight", note: "NFL Network · Producer", url: "https://youtu.be/4-e0j52sXEc" },
+  { title: "Cleveland Browns 2021 Highlight", note: "NFL Network · Producer", url: "https://youtu.be/5uW4hgOBZIE" },
   { title: "Weather", note: "", url: "https://youtu.be/-tNqJg0L1sg" },
   { title: "SB Music Fest", note: "Festival film", url: "https://youtu.be/Uu_K9ya8ofE" },
-  { title: "No Filter, Mic’d Up at The Players | Chasing Sunday", note: "PGA TOUR Chasing Sunday · Associate Producer and Editor", url: "https://www.youtube.com/watch?v=unKuAj1BQic" }
+  { title: "No Filter, Mic’d Up at The Players | Chasing Sunday", note: "PGA TOUR · Associate Producer/Editor", url: "https://www.youtube.com/watch?v=unKuAj1BQic" }
 ];
 /* Titles on streaming services can’t be embedded, so they appear as links. */
 const STREAMING = [
   { title: "The Pick Is In", tone: "gold", poster: "images/the-pick-is-in.jpg", role: "Associate Producer · Emmy winner", service: "Disney+", url: "https://www.disneyplus.com/browse/entity-4998481b-6146-4349-93a9-90c604316a2d" },
   { title: "Quarterback", tone: "gold", poster: "images/quarterback.jpg", role: "Season 2 · Associate Producer · Emmy winner", service: "Netflix", url: "https://www.netflix.com/title/81482895" },
-  { title: "Hard Knocks: In Season with the NFC East", poster: "images/hard-knocks-nfc-east.jpg", role: "Associate Producer", service: "HBO Max", url: "https://www.hbomax.com/show/0052fa5c-85b6-42dc-88bb-2c6f812d7216" },
-  { title: "Hard Knocks: In Season with the AFC North", poster: "images/hard-knocks-afc-north.jpg", role: "Associate Producer", service: "HBO Max", url: "https://www.hbomax.com/show/2235e0d2-1e0c-4031-8b51-b74f1707a60a" },
-  { title: "Hard Knocks: In Season with the Miami Dolphins", poster: "images/hard-knocks-dolphins.jpg", role: "Associate Producer and Editor", service: "HBO Max", url: "https://www.hbomax.com/show/dd81fcb3-4d2c-4abb-9c97-88355f4978e1" },
-  { title: "Hard Knocks: Offseason with the New York Giants", tone: "silver", poster: "images/hard-knocks-giants-offseason.jpg", role: "Associate Producer · Emmy nominated", service: "HBO Max", url: "https://www.hbomax.com/show/f53eed07-55f6-4f54-8506-7a7cf71f1779" },
+  { title: "Receiver", poster: "images/receiver.jpg", role: "Associate Producer", service: "Netflix", url: "https://www.netflix.com/title/81733809" },
+  { title: "Hard Knocks: In Season with the NFC East", poster: "images/hard-knocks-nfc-east.jpg", role: "Associate Producer/Editor", service: "HBO Max", url: "https://www.hbomax.com/show/0052fa5c-85b6-42dc-88bb-2c6f812d7216" },
+  { title: "Hard Knocks: In Season with the AFC North", poster: "images/hard-knocks-afc-north.jpg", role: "Associate Producer/Editor", service: "HBO Max", url: "https://www.hbomax.com/show/2235e0d2-1e0c-4031-8b51-b74f1707a60a" },
+  { title: "Hard Knocks: In Season with the Miami Dolphins", poster: "images/hard-knocks-dolphins.jpg", role: "Associate Producer/Editor", service: "HBO Max", url: "https://www.hbomax.com/show/dd81fcb3-4d2c-4abb-9c97-88355f4978e1" },
+  { title: "Hard Knocks: Offseason with the New York Giants", tone: "silver", poster: "images/hard-knocks-giants-offseason.jpg", role: "Associate Producer/Editor · Emmy nominated", service: "HBO Max", url: "https://www.hbomax.com/show/f53eed07-55f6-4f54-8506-7a7cf71f1779" },
   { title: "WWE Unreal", tone: "silver", poster: "images/wwe-unreal.jpg", role: "Associate Producer · Emmy nominated", service: "Netflix", url: "https://www.netflix.com/title/81928921" },
   { title: "Rise of the 49ers", poster: "images/rise-of-the-49ers.jpg", role: "Associate Producer", service: "AMC+", url: "https://www.amcplus.com/shows/rise-of-the-49ers--1073909" },
-  { title: "30 for 30: Bullies of Baltimore", poster: "images/bullies-of-baltimore.jpg", role: "Production Assistant", service: "Disney+", url: "https://www.disneyplus.com/browse/entity-6920db05-41ef-450f-97ce-70ec86dbff9f" }
+  { title: "30 for 30: Bullies of Baltimore", poster: "images/bullies-of-baltimore.jpg", role: "Production Assistant", service: "Disney+", url: "https://www.disneyplus.com/browse/entity-6920db05-41ef-450f-97ce-70ec86dbff9f" },
+  { title: "Earnin’ It: The NFL’s Forward Progress", poster: "images/earnin-it.jpg", role: "Production Assistant", service: "Peacock", url: "https://www.peacocktv.com/watch-online/sports/earnin-it-the-nfls-forward-progress/5580678551125677112" },
+  { title: "United by Football – A Season in the USFL", poster: "images/united-by-football.jpg", role: "Production Assistant", service: "Tubi" },
+  { title: "Hard Knocks In Season: The Indianapolis Colts", poster: "images/hard-knocks-colts.jpg", role: "Associate Producer", service: "HBO" },
+  { title: "Hard Knocks In Season: The Arizona Cardinals", poster: "images/hard-knocks-cardinals.jpg", role: "Associate Producer", service: "Prime Video" }
+];
+
+/* Full credits, grouped by role. Each item is [title, Emmy tag]; use "winner", "nominated" or "". */
+const CREDITS = [
+  { role: "Producer", items: [
+    ["NFL Network’s 2025 Miami Dolphins Season Highlight", ""],
+    ["NFL Network’s 2024 Seattle Seahawks Season Highlight", ""],
+    ["NFL Network’s 2023 Chicago Bears Season Highlight", ""],
+    ["NFL Network’s 2022 Cleveland Browns Season Highlight", ""],
+    ["NFL Network’s 2021 Cleveland Browns Season Highlight", ""]
+  ]},
+  { role: "Associate Producer/Editor", items: [
+    ["PGA TOUR’s Chasing Sunday: The Players Championship", ""],
+    ["HBO’s Hard Knocks: In Season With the NFC East", ""],
+    ["HBO’s Hard Knocks: In Season With the AFC North", ""],
+    ["HBO’s Hard Knocks: Offseason With the New York Giants", "nominated"],
+    ["HBO’s Hard Knocks: In Season With the Miami Dolphins", ""]
+  ]},
+  { role: "Associate Producer", items: [
+    ["Roku’s NFL Draft: The Pick Is In (2024)", "winner"],
+    ["ESPN’s The Pick Is In", ""],
+    ["Netflix’s Quarterback Season 2", "winner"],
+    ["Netflix’s WWE: Unreal", "nominated"],
+    ["Netflix’s Receiver", ""],
+    ["AMC’s Rise of the 49ers", ""],
+    ["HBO’s Hard Knocks In Season: The Arizona Cardinals", ""],
+    ["HBO’s Hard Knocks In Season: The Indianapolis Colts", ""]
+  ]},
+  { role: "Production Assistant", items: [
+    ["ESPN’s 30 for 30: Bullies of Baltimore", ""],
+    ["Peacock’s Earnin’ It: The NFL’s Forward Progress", ""],
+    ["FOX’s United by Football – A Season in the USFL", ""]
+  ]}
 ];
 /* ============================================ */
 
@@ -213,9 +263,9 @@ PROJECTS.forEach((p, i) => {
 
 STREAMING.forEach(s => {
   const li = document.createElement("li"), a = document.createElement("a"), sm = document.createElement("small");
-  a.href = s.url; a.target = "_blank"; a.rel = "noopener"; if (s.tone) a.className = s.tone;
+  if (s.url) { a.href = s.url; a.target = "_blank"; a.rel = "noopener"; } if (s.tone) a.className = s.tone;
   const txt = document.createElement("span"); txt.append(document.createTextNode(s.title));
-  (s.role ? s.role.split(" · ") : []).concat("Watch on " + s.service).forEach((part, i) => {
+  (s.role ? s.role.split(" · ") : []).concat(s.url ? "Watch on " + s.service : "No longer available on " + s.service).forEach((part, i) => {
     if (i) sm.append(" · ");
     if (part === "Emmy winner" || part === "Emmy nominated") {
       const e = document.createElement("b"); e.className = part === "Emmy winner" ? "emmy-w" : "emmy-n"; e.textContent = part; sm.appendChild(e);
@@ -227,9 +277,21 @@ STREAMING.forEach(s => {
   li.appendChild(a); $("credits").appendChild(li);
 });
 
+const cg = $("creditGroups");
+CREDITS.forEach(g => {
+  const d = document.createElement("div"), h = document.createElement("h3"), ul = document.createElement("ul");
+  h.textContent = g.role; d.append(h, ul);
+  g.items.forEach(([title, tag]) => {
+    const li = document.createElement("li"); li.append(title);
+    if (tag) { li.append(" · "); const b = document.createElement("b"); b.textContent = "Emmy " + tag; li.appendChild(b); }
+    ul.appendChild(li);
+  });
+  cg.appendChild(d);
+});
+
 /* interactive timeline: drag to scrub, click a label to jump, arrow keys to step */
 const ruler = $("ruler"), ph = $("playhead"), phTc = $("phTc"), marksEl = $("marks");
-const SECTIONS = [["work", "Work"], ["streaming", "Streaming"], ["about", "About"], ["contact", "Contact"]];
+const SECTIONS = [["work", "Work"], ["streaming", "Streaming"], ["credits", "Credits"], ["about", "About"], ["contact", "Contact"]];
 const maxScroll = () => Math.max(0, document.documentElement.scrollHeight - innerHeight);
 const fmt = pct => { const s = Math.round(pct * 180); return "00:" + String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0"); };
 const markBtns = SECTIONS.map(([id, label]) => {
@@ -238,8 +300,9 @@ const markBtns = SECTIONS.map(([id, label]) => {
   marksEl.appendChild(b); return b;
 });
 function layoutMarks(){
-  const max = maxScroll(), W = marksEl.clientWidth, GAP = 28;
+  const max = maxScroll(), W = marksEl.clientWidth;
   const w = markBtns.map(b => b.offsetWidth);
+  const GAP = Math.max(4, Math.min(28, (W - w.reduce((a, c) => a + c, 0)) / (SECTIONS.length - 1)));
   const left = SECTIONS.map(([id]) => {
     const top = $(id).getBoundingClientRect().top + scrollY - 70;
     return (max ? Math.min(1, Math.max(0, top / max)) : 0) * W;
