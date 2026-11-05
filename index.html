@@ -108,14 +108,14 @@ footer{padding:2rem 0 3rem;color:var(--muted);font-size:.95rem;border-top:1px so
 </div>
 
 <main class="wrap">
+  <section id="streaming" aria-labelledby="streamH">
+    <h2 id="streamH">Watch on streaming</h2>
+    <ul class="credits" id="streamList"></ul>
+  </section>
+
   <section id="work" aria-labelledby="workH">
     <h2 id="workH">Selected work</h2>
     <div class="grid" id="grid"></div>
-  </section>
-
-  <section id="streaming" aria-labelledby="streamH">
-    <h2 id="streamH">Watch on streaming</h2>
-    <ul class="credits" id="credits"></ul>
   </section>
 
   <section id="credits" aria-labelledby="creditsH">
@@ -274,7 +274,7 @@ STREAMING.forEach(s => {
   txt.appendChild(sm);
   if (s.poster) { const im = document.createElement("img"); im.src = s.poster; im.alt = ""; im.addEventListener("error", () => im.remove()); a.appendChild(im); }
   a.appendChild(txt);
-  li.appendChild(a); $("credits").appendChild(li);
+  li.appendChild(a); $("streamList").appendChild(li);
 });
 
 const cg = $("creditGroups");
@@ -291,7 +291,7 @@ CREDITS.forEach(g => {
 
 /* interactive timeline: drag to scrub, click a label to jump, arrow keys to step */
 const ruler = $("ruler"), ph = $("playhead"), phTc = $("phTc"), marksEl = $("marks");
-const SECTIONS = [["work", "Work"], ["streaming", "Streaming"], ["credits", "Credits"], ["about", "About"], ["contact", "Contact"]];
+const SECTIONS = [["streaming", "Streaming"], ["work", "Work"], ["credits", "Credits"], ["about", "About"], ["contact", "Contact"]];
 const maxScroll = () => Math.max(0, document.documentElement.scrollHeight - innerHeight);
 const fmt = pct => { const s = Math.round(pct * 180); return "00:" + String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0"); };
 const markBtns = SECTIONS.map(([id, label]) => {
